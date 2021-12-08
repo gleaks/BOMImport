@@ -5,10 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BOMImport"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <DockPanel Margin="10">
-        <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
-            <Button Name="btnOpenFile" Click="BtnOpenFile_Click">Open file</Button>
+        Title="BOMImport - Focused Test Inc." Height="600" Width="800" ResizeMode="NoResize">
+    <DockPanel Margin="10" HorizontalAlignment="Stretch">
+        <WrapPanel DockPanel.Dock="Top" Margin="0,0,0,10">
+            <Button Name="btnOpenFile" Click="BtnOpenFile_Click">Open BOM...</Button>
+            <Button Name="btnConnect" Click="BtnConnect_Click">Test Connection</Button>
+            <TextBlock Width="297"></TextBlock>
+            <TextBlock Text="ERPNext User:   " TextWrapping="Wrap" FontWeight="Bold"/>
+            <TextBlock x:Name="usernameTxt" Text="gareth@focusedtest.com    " TextWrapping="Wrap"/>
+            <Button Name="btnAPIKey" Click="BtnAPIKey_Click">Credentials</Button>
         </WrapPanel>
         <TextBox Name="txtEditor" />
     </DockPanel>

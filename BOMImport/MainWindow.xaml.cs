@@ -4,9 +4,12 @@ using System.Windows;
 using System.Globalization;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using Microsoft.Win32;
 using CsvHelper;
 using CsvHelper.Configuration;
+using Flurl.Http;
 
 namespace BOMImport
 {
@@ -17,48 +20,14 @@ namespace BOMImport
             InitializeComponent();
         }
 
-        public record BOMLine
-        {
-            public string Count { get; set; }
-            public string ComponentName { get; set; }
-            public string RefDes { get; set; }
-            public string Value { get; set; }
-            public string PartNumber { get; set; }
-            public string DistributorPartNum { get; set; }
-            public string Manufacturer { get; set; }
-            public string MfgPartNum { get; set; }
-            public string FTIPartNumber { get; set; }
-        }
-
-        public sealed class BOMLineMap : ClassMap<BOMLine>
-        {
-            public BOMLineMap()
-            {
-                // Automatically try and map as many header fields as possible, as there can be a variable amount of columns in each BOM
-                AutoMap(CultureInfo.InvariantCulture);
-                // Hand map the most important header columns, especially ones that don't auto-format
-                Map(m => m.PartNumber).Name("Part Number");
-                Map(m => m.DistributorPartNum).Name("Distributor Part Num");
-                Map(m => m.MfgPartNum).Name("Mfg Part Num");
-                Map(m => m.FTIPartNumber).Name("FTI Part Number");
-            }
-        }
-
-        public class ERPLine : IComparable<ERPLine>
-        {
-            public string FTIPartNumber { get; set; }
-            public string Qty { get; set; }
-            public string RefDes { get; set; }
-            public int CompareTo(ERPLine compareLine)
-            {
-                return compareLine == null ? 1 : FTIPartNumber.CompareTo(compareLine.FTIPartNumber);
-            }
-        }
+        public Credentials credentials = new();
 
         private void BtnOpenFile_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "P-CAD BOM (*.bom)|*.bom|All files (*.*)|*.*";
+            OpenFileDialog openFileDialog = new()
+            {
+                Filter = "P-CAD BOM (*.bom)|*.bom|All files (*.*)|*.*"
+            };
             if (openFileDialog.ShowDialog() == true)
             {
                 // Read the CSV file into a string so it can be manipulated
@@ -76,7 +45,7 @@ namespace BOMImport
                 // This will be the final, formatted list that is imported into ERPNext
                 var erpLines = new List<ERPLine>();
                 // Write the string that was opened into a MemoryStream (this is required for CSVHelper to read it)
-                using (MemoryStream memoryStream = new MemoryStream())
+                using (MemoryStream memoryStream = new())
                 {
                     var streamWriter = new StreamWriter(memoryStream);
                     try
@@ -153,6 +122,18 @@ namespace BOMImport
                     txtEditor.Text += line.FTIPartNumber + " - " + line.Qty + refDesMismatch + " - " + line.RefDes + Environment.NewLine;
                 }
             }
+        }
+
+        private void BtnAPIKey_Click(object sender, RoutedEventArgs e)
+        {
+            APIKey apiKeyWindow = new(this, credentials);
+            apiKeyWindow.Show();
+        }
+
+        private async void BtnConnect_Click(object sender, RoutedEventArgs e)
+        {
+            var result = await ERPNext.Login(credentials.APIKeyText, credentials.APISecretText);
+            txtEditor.Text += result;
         }
     }
 }

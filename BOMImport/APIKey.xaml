@@ -1,0 +1,18 @@
+﻿<Window x:Class="BOMImport.APIKey"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BOMImport"
+        mc:Ignorable="d"
+        Title="Change Credentials..." Height="195" Width="233" WindowStyle="ToolWindow" ResizeMode="NoResize">
+    <Grid>
+        <Label Content="API Key" HorizontalAlignment="Left" Margin="12,53,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="apiKeyText" HorizontalAlignment="Left" Margin="86,57,0,0" Text="{Binding APIKeyText, Mode=OneWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="118"/>
+        <Label Content="API Secret" HorizontalAlignment="Left" Margin="12,82,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="apiSecretText" HorizontalAlignment="Left" Margin="86,86,0,0" Text="{Binding APISecretText, Mode=OneWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="118"/>
+        <Button x:Name="credentialCancelBtn" Content="Cancel" HorizontalAlignment="Left" Margin="145,126,0,0" VerticalAlignment="Top" Click="CredentialCancel_Click"/>
+        <Button x:Name="credentialOKBtn" Content="OK" HorizontalAlignment="Left" Margin="54,126,0,0" VerticalAlignment="Top" Click="CredentialOK_Click"/>
+        <TextBlock x:Name="errorMessageTxt" HorizontalAlignment="Left" Margin="42,10,0,0" Text="THERE WAS AN ERROR WITH THESE CREDENTIALS" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Foreground="Red" FontWeight="Bold" FontStyle="Italic" TextDecorations="{x:Null}" Visibility="Hidden"/>
+    </Grid>
+</Window>

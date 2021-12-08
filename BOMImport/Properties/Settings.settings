@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="BOMImport.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="api_key" Type="System.String" Scope="User">
+      <Value Profile="(Default)">795d6c1f20364ed</Value>
+    </Setting>
+    <Setting Name="api_secret" Type="System.String" Scope="User">
+      <Value Profile="(Default)">6e1adbc1dffbcc0</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
