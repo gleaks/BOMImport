@@ -7,9 +7,9 @@
         mc:Ignorable="d"
         Title="ERPImport" Height="450" Width="800">
     <Grid>
-        <DataGrid x:Name="dgBOM" ItemsSource="{Binding}" AutoGenerateColumns="False">
+        <DataGrid x:Name="dgBOM" ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="0,48,0,0" HorizontalAlignment="Stretch">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="# ">
+                <DataGridTextColumn Header="# " Width="0.05*">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}">
                             <Binding Path="LineNumber" />
@@ -17,9 +17,16 @@
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="FTI Part #" Binding="{Binding FTIPartNumber}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Qty" Binding="{Binding Qty}"></DataGridTextColumn>
-                <DataGridTextColumn Header="RefDes" Binding="{Binding RefDes}"></DataGridTextColumn>
+                <DataGridTextColumn Header="FTI Part #" Width="0.1*" Binding="{Binding FTIPartNumber}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Qty" Width="0.05*" Binding="{Binding Qty}"></DataGridTextColumn>
+                <DataGridTextColumn Header="RefDes" Width="0.5*" Binding="{Binding RefDes}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Component Name" Width="0.3*" Binding="{Binding ComponentName}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

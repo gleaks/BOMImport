@@ -52,7 +52,8 @@ namespace BOMImport
                 // Get rid of any line breaks inside of the header (index 0 of the split), P-CAD adds line breaks in the header sometimes
                 var fixedHeader = fixHeaders[0].Replace(Environment.NewLine, "");
                 // Combine the header and the body that was split earlier
-                var fixedHeaders = fixedHeader + fixHeaders[1];
+                var fixedHeaders = "";
+                foreach(var x in fixHeaders) { fixedHeaders += x; }
                 // This will be the final, formatted list that is imported into ERPNext
                 var erpLines = new List<ERPLine>();
                 // Write the string that was opened into a MemoryStream (this is required for CSVHelper to read it)
@@ -84,11 +85,12 @@ namespace BOMImport
                         foreach (var line in lines)
                         {
                             // Make sure that the component isn't a mechanical hole or something marked as not used
-                            if (!line.ComponentName.Contains("HOLE") && 
-                                !line.ComponentName.Contains("TEST_PAD") && 
-                                !line.ComponentName.Contains("NOT_USED") && 
-                                !line.Value.Contains("Not Used") && 
-                                !line.Value.Contains("NOT_USED"))
+                            if (!line.ComponentName.Contains("HOLE") &&
+                                !line.ComponentName.Contains("TEST_PAD") &&
+                                !line.ComponentName.Contains("NOT_USED") &&
+                                !line.Value.Contains("Not Used") &&
+                                !line.Value.Contains("NOT_USED") &&
+                                !line.PatternName.Contains("BLANK"))
                             {
                                 // See if this lines FTI Part # already exists in our erpLines list
                                 var thisLine = erpLines.Find(d => d.FTIPartNumber == line.FTIPartNumber);
@@ -100,17 +102,18 @@ namespace BOMImport
                                     // If this line has a count then it means it is a repeated part, so also add the quantity
                                     if (line.Count != "")
                                     {
-                                        thisLine.Qty += Int32.Parse(line.Count);
+                                        thisLine.Qty += int.Parse(line.Count);
                                     }
                                 }
                                 // If there is a number in the count field and no part with the same FTI part # exists then it is a new part entry
                                 if (thisLine == null && line.Count != "")
                                 {
                                     // Add the line details to a new object in our list
-                                    erpLines.Add(new ERPLine() { 
-                                        FTIPartNumber = line.FTIPartNumber, 
-                                        Qty = Int32.Parse(line.Count),
-                                        RefDes = line.RefDes 
+                                    erpLines.Add(new ERPLine() {
+                                        FTIPartNumber = line.FTIPartNumber,
+                                        Qty = int.Parse(line.Count),
+                                        RefDes = line.RefDes,
+                                        ComponentName = line.ComponentName
                                     });
                                 }
                             }
@@ -126,7 +129,7 @@ namespace BOMImport
                 erpLines.Sort();
 
                 // Open a new window to proceed with BOM review & ERPNext import
-                ERPImport erpImportWindow = new(erpLines);
+                ERPImport erpImportWindow = new(erpLines, credentials);
                 erpImportWindow.Show();
             }
         }

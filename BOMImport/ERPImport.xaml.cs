@@ -23,9 +23,11 @@ namespace BOMImport
     public partial class ERPImport : Window
     {
         private readonly List<ERPLine> erpLines;
-        public ERPImport(List<ERPLine> x)
+        private readonly Credentials credentials;
+        public ERPImport(List<ERPLine> x, Credentials y)
         {
             erpLines = x;
+            credentials = y;
             DataContext = erpLines;
             int index = 1;
             // Iterate through each consolidated line that will be imported into ERPNext
@@ -37,7 +39,7 @@ namespace BOMImport
                 string refDesMismatch = null;
                 // If the refdes count doesnt match with the BOM count then populate the error message
                 if (refDesSplit.Length != line.Qty) { refDesMismatch += " *MISMATCH WITH REFDES QTY* "; }
-                // Display each line of the consolidated BOM in the text input on the MainWindow
+                // Set the error message in the object
                 line.RefDesError = refDesMismatch;
                 line.LineNumber = index;
                 index++;

@@ -17,6 +17,7 @@ namespace BOMImport
         public string Manufacturer { get; set; }
         public string MfgPartNum { get; set; }
         public string FTIPartNumber { get; set; }
+        public string PatternName { get; set; }
     }
     public sealed class BOMLineMap : ClassMap<BOMLine>
     {
@@ -37,6 +38,7 @@ namespace BOMImport
         public string FTIPartNumber { get; set; }
         public int Qty { get; set; }
         public string RefDes { get; set; }
+        public string ComponentName { get; set; }
         public string RefDesError { get; set; }
         public int LineNumber { get; set; }
         public int CompareTo(ERPLine compareLine)
