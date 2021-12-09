@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace BOMImport
 {
-    /// <summary>
-    /// Interaction logic for APIKey.xaml
-    /// </summary>
     public partial class APIKey : Window
     {
         private readonly MainWindow mainWindow;
@@ -35,15 +32,9 @@ namespace BOMImport
         private async void CredentialOK_Click(object sender, RoutedEventArgs e)
         {
             var loginUser = await ERPNext.Login(apiKeyText.Text, apiSecretText.Text);
-            if (loginUser != "ERROR")
-            {
-                this.Close();
-                mainWindow.usernameTxt.Text = loginUser;
-            }
-            else
-            {
-                errorMessageTxt.Visibility = Visibility.Visible;
-            }
+            mainWindow.usernameTxt.Text = loginUser + "    ";
+            if (loginUser != "ERROR") { this.Close(); }
+            else { errorMessageTxt.Visibility = Visibility.Visible; }
         }
     }
 }

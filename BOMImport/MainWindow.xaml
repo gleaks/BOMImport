@@ -9,10 +9,9 @@
     <DockPanel Margin="10" HorizontalAlignment="Stretch">
         <WrapPanel DockPanel.Dock="Top" Margin="0,0,0,10">
             <Button Name="btnOpenFile" Click="BtnOpenFile_Click">Open BOM...</Button>
-            <Button Name="btnConnect" Click="BtnConnect_Click">Test Connection</Button>
             <TextBlock Width="297"></TextBlock>
             <TextBlock Text="ERPNext User:   " TextWrapping="Wrap" FontWeight="Bold"/>
-            <TextBlock x:Name="usernameTxt" Text="gareth@focusedtest.com    " TextWrapping="Wrap"/>
+            <TextBlock x:Name="usernameTxt" Text="Logging in...    " TextWrapping="Wrap"/>
             <Button Name="btnAPIKey" Click="BtnAPIKey_Click">Credentials</Button>
         </WrapPanel>
         <TextBox Name="txtEditor" />

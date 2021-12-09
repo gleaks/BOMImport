@@ -1,0 +1,26 @@
+﻿<Window x:Class="BOMImport.ERPImport"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BOMImport"
+        mc:Ignorable="d"
+        Title="ERPImport" Height="450" Width="800">
+    <Grid>
+        <DataGrid x:Name="dgBOM" ItemsSource="{Binding}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="# ">
+                    <DataGridTextColumn.Binding>
+                        <MultiBinding StringFormat="{}{0} {1}">
+                            <Binding Path="LineNumber" />
+                            <Binding Path="RefDesError" />
+                        </MultiBinding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="FTI Part #" Binding="{Binding FTIPartNumber}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Qty" Binding="{Binding Qty}"></DataGridTextColumn>
+                <DataGridTextColumn Header="RefDes" Binding="{Binding RefDes}"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

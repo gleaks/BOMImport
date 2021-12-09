@@ -18,8 +18,19 @@ namespace BOMImport
         public MainWindow()
         {
             InitializeComponent();
+            Startup();
         }
 
+        public async void Startup()
+        {
+            // Test the pre-existing login credentials in Settings
+            var loginUser = await ERPNext.Login();
+            // Display which user is logged in, or ERROR if not able to log in
+            usernameTxt.Text = loginUser + "    ";
+
+        }
+
+        // Create an object that is a shortcut to the credentials stored in Settings
         public Credentials credentials = new();
 
         private void BtnOpenFile_Click(object sender, RoutedEventArgs e)
@@ -79,21 +90,26 @@ namespace BOMImport
                                 !line.Value.Contains("Not Used") && 
                                 !line.Value.Contains("NOT_USED"))
                             {
-                                // Here is where I am consolidating each individual RefDes line into a single line with a qty & concatenated RefDes line
-                                // If there is nothing in the Count field that means it is just a unique refdes line
-                                if (line.Count == "")
-                                {
-                                    // Find the previously entered line object that contains this part number
-                                    var thisLine = erpLines.Find(d => d.FTIPartNumber == line.FTIPartNumber);
-                                    // Update the previously entered line's RefDes to include the RefDes on this line
-                                    if (thisLine != null) { thisLine.RefDes += " " + line.RefDes; }
+                                // See if this lines FTI Part # already exists in our erpLines list
+                                var thisLine = erpLines.Find(d => d.FTIPartNumber == line.FTIPartNumber);
+                                // If the part exists
+                                if (thisLine != null) 
+                                { 
+                                    // Add this lines reference designator to the running total of RefDes in the list
+                                    thisLine.RefDes += " " + line.RefDes; 
+                                    // If this line has a count then it means it is a repeated part, so also add the quantity
+                                    if (line.Count != "")
+                                    {
+                                        thisLine.Qty += Int32.Parse(line.Count);
+                                    }
                                 }
-                                else
+                                // If there is a number in the count field and no part with the same FTI part # exists then it is a new part entry
+                                if (thisLine == null && line.Count != "")
                                 {
-                                    // If there is a number in the Count field then create a new object in our ERPLine list
+                                    // Add the line details to a new object in our list
                                     erpLines.Add(new ERPLine() { 
                                         FTIPartNumber = line.FTIPartNumber, 
-                                        Qty = line.Count,
+                                        Qty = Int32.Parse(line.Count),
                                         RefDes = line.RefDes 
                                     });
                                 }
@@ -109,18 +125,9 @@ namespace BOMImport
                 // Sort the BOM by FTIPartNumber (this is set in the class definition above - CompareTo)
                 erpLines.Sort();
 
-                // Iterate through each consolidated line that will be imported into ERPNext
-                foreach (ERPLine line in erpLines)
-                {
-                    // Split the RefDes line by whitespace, so that it is possible to count the number of reference designators
-                    var refDesSplit = line.RefDes.Split(" ");
-                    // An empty error message if the refdes count matches with the BOM count
-                    string refDesMismatch = "";
-                    // If the refdes count doesnt match with the BOM count then populate the error message
-                    if (refDesSplit.Length != Int32.Parse(line.Qty)) { refDesMismatch += " *MISMATCH WITH REFDES QTY* "; }
-                    // Display each line of the consolidated BOM in the text input on the MainWindow
-                    txtEditor.Text += line.FTIPartNumber + " - " + line.Qty + refDesMismatch + " - " + line.RefDes + Environment.NewLine;
-                }
+                // Open a new window to proceed with BOM review & ERPNext import
+                ERPImport erpImportWindow = new(erpLines);
+                erpImportWindow.Show();
             }
         }
 
@@ -128,12 +135,6 @@ namespace BOMImport
         {
             APIKey apiKeyWindow = new(this, credentials);
             apiKeyWindow.Show();
-        }
-
-        private async void BtnConnect_Click(object sender, RoutedEventArgs e)
-        {
-            var result = await ERPNext.Login(credentials.APIKeyText, credentials.APISecretText);
-            txtEditor.Text += result;
         }
     }
 }

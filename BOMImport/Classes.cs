@@ -35,8 +35,10 @@ namespace BOMImport
     public class ERPLine : IComparable<ERPLine>
     {
         public string FTIPartNumber { get; set; }
-        public string Qty { get; set; }
+        public int Qty { get; set; }
         public string RefDes { get; set; }
+        public string RefDesError { get; set; }
+        public int LineNumber { get; set; }
         public int CompareTo(ERPLine compareLine)
         {
             return compareLine == null ? 1 : FTIPartNumber.CompareTo(compareLine.FTIPartNumber);
@@ -59,8 +61,10 @@ namespace BOMImport
     public static class ERPNext
     {
         public static string Username { get; set; }
-        public static async Task<String> Login(string username, string password)
+        public static async Task<String> Login(string u = null, string p = null)
         {
+            var username = u ?? Properties.Settings.Default.api_key;
+            var password = p ?? Properties.Settings.Default.api_secret;
             try
             {
                 var result = await "https://focusedtest.frappe.cloud/api/method/frappe.auth.get_logged_user"

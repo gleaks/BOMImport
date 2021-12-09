@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BOMImport"
         mc:Ignorable="d"
-        Title="Change Credentials..." Height="195" Width="233" WindowStyle="ToolWindow" ResizeMode="NoResize">
+        Title="Credentials..." Height="195" Width="233" WindowStyle="ToolWindow" ResizeMode="NoResize">
     <Grid>
         <Label Content="API Key" HorizontalAlignment="Left" Margin="12,53,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="apiKeyText" HorizontalAlignment="Left" Margin="86,57,0,0" Text="{Binding APIKeyText, Mode=OneWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="118"/>
