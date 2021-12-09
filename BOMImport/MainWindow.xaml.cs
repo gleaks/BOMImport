@@ -74,6 +74,8 @@ namespace BOMImport
                         {
                             // Set CSVHelper to ignore case sensitivity by always lowercasing the headers
                             PrepareHeaderForMatch = args => args.Header.ToLower(),
+                            HeaderValidated = null,
+                            MissingFieldFound = null
                         };
                         // Start CSVHelper by tying the streamreader & configuration to it
                         using var csvReader = new CsvReader(streamReader, config);

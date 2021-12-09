@@ -49,12 +49,12 @@ namespace BOMImport
 
     public class Credentials
     {
-        public string APIKeyText
+        public static string APIKeyText
         {
             get { return Properties.Settings.Default.api_key; }
             set { Properties.Settings.Default.api_key = value; }
         }
-        public string APISecretText
+        public static string APISecretText
         {
             get { return Properties.Settings.Default.api_secret; }
             set { Properties.Settings.Default.api_secret = value; }
@@ -80,6 +80,10 @@ namespace BOMImport
             {
                 return "ERROR";
             }
+        }
+        public static async Task<String> NewBOM(string bomPart, ERPLine erpLines)
+        {
+            return "test";
         }
     }
 }

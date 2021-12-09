@@ -47,5 +47,23 @@ namespace BOMImport
 
             InitializeComponent();
         }
+
+        private void BtnImport_Click(object sender, RoutedEventArgs e)
+        {
+            if (int.TryParse(txtBomPart.Text, out int n) && Math.Floor(Math.Log10(n) + 1) == 6)
+            {
+                this.Close();
+            }
+            else
+            {
+                txtBomPart.BorderBrush = Brushes.Red;
+                txtBomPartError.Visibility = Visibility.Visible;
+            }
+        }
+        private void TxtBomPart_Changed(object sender, RoutedEventArgs e)
+        {
+            txtBomPart.ClearValue(TextBox.BorderBrushProperty);
+            txtBomPartError.Visibility = Visibility.Hidden;
+        }
     }
 }
