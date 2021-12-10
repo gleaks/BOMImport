@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using Flurl.Http;
 using CsvHelper.Configuration;
+using System.Collections.Generic;
 
 namespace BOMImport
 {
@@ -65,8 +66,8 @@ namespace BOMImport
         public static string Username { get; set; }
         public static async Task<String> Login(string u = null, string p = null)
         {
-            var username = u ?? Properties.Settings.Default.api_key;
-            var password = p ?? Properties.Settings.Default.api_secret;
+            var username = u ?? Credentials.APIKeyText;
+            var password = p ?? Credentials.APISecretText;
             try
             {
                 var result = await "https://focusedtest.frappe.cloud/api/method/frappe.auth.get_logged_user"
@@ -81,9 +82,37 @@ namespace BOMImport
                 return "ERROR";
             }
         }
-        public static async Task<String> NewBOM(string bomPart, ERPLine erpLines)
+        public static async Task<string> NewBOM(string bomPart, List<ERPLine> erpLines, bool submit)
         {
-            return "test";
+            var queryString = "{ \"item\" : \"" + bomPart + "\", \"company\" : \"Focused Test Inc\", \"quantity\" : \"1\", \"currency\" : \"USD\", ";
+            queryString += "\"conversion_rate\" : \"1\", \"items\" : [ ";
+            foreach (ERPLine line in erpLines)
+            {
+                queryString += "{ \"item_code\" : \"" + line.FTIPartNumber + "\", \"qty\" : \"" + line.Qty + "\", \"uom\" : \"Nos\", \"rate\" : \"0\", ";
+                queryString += "\"refdes\" : \"" + line.RefDes + "\" }";
+
+                // If the line is the last line
+                if (erpLines.IndexOf(line) == erpLines.Count - 1)
+                {
+                    queryString += " ] }";
+                }
+                else
+                {
+                    queryString += ", ";
+                }
+            }
+            var result = await "https://focusedtest.frappe.cloud/api/resource/BOM"
+                .WithBasicAuth(Credentials.APIKeyText, Credentials.APISecretText)
+                .PostStringAsync(queryString)
+                .ReceiveJson();
+            if (result.data[0] != null)
+            {
+                return result.data[0];
+            }
+            else
+            {
+                return "ERROR";
+            }
         }
     }
 }

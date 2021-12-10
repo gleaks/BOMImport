@@ -48,11 +48,16 @@ namespace BOMImport
             InitializeComponent();
         }
 
-        private void BtnImport_Click(object sender, RoutedEventArgs e)
+        private async void BtnImport_Click(object sender, RoutedEventArgs e)
         {
             if (int.TryParse(txtBomPart.Text, out int n) && Math.Floor(Math.Log10(n) + 1) == 6)
             {
-                this.Close();
+
+                var bomResult = await ERPNext.NewBOM(txtBomPart.Text, erpLines, (bool)(checkSubmit.IsChecked));
+                if (bomResult != "ERROR")
+                {
+
+                }
             }
             else
             {
