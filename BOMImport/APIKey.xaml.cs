@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace BOMImport
 {
@@ -27,13 +15,13 @@ namespace BOMImport
 
         private void CredentialCancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
         private async void CredentialOK_Click(object sender, RoutedEventArgs e)
         {
             var loginUser = await ERPNext.Login(apiKeyText.Text, apiSecretText.Text);
             mainWindow.usernameTxt.Text = loginUser + "    ";
-            if (loginUser != "ERROR") { this.Close(); }
+            if (loginUser != "ERROR") { Close(); }
             else { errorMessageTxt.Visibility = Visibility.Visible; }
         }
     }

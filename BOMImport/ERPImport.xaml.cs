@@ -23,7 +23,7 @@ namespace BOMImport
     public partial class ERPImport : Window
     {
         private readonly List<ERPLine> erpLines;
-        private bool hasErrors;
+        private readonly bool hasErrors;
         public ERPImport(List<ERPLine> x)
         {
             erpLines = x;
@@ -41,7 +41,7 @@ namespace BOMImport
                 {
                     string refDesMismatch = "*MISMATCH WITH REFDES QTY* ";
                     line.Error += refDesMismatch;
-                    hasErrors = true; 
+                    hasErrors = true;
                 }
                 if (!int.TryParse(line.FTIPartNumber, out int n) && Math.Floor(Math.Log10(n) + 1) != 6)
                 {
@@ -64,7 +64,7 @@ namespace BOMImport
                 if (int.TryParse(txtBomPart.Text, out int n) && Math.Floor(Math.Log10(n) + 1) == 6)
                 {
 
-                    var bomResult = await ERPNext.NewBOM(txtBomPart.Text, erpLines, (bool)(checkSubmit.IsChecked));
+                    var bomResult = await ERPNext.NewBOM(txtBomPart.Text, erpLines, (bool)checkSubmit.IsChecked);
                     if (bomResult != "ERROR")
                     {
                         Close();
