@@ -12,8 +12,8 @@
                 <DataGridTextColumn Header="# " Width="0.05*">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}">
-                            <Binding Path="LineNumber" Mode="TwoWay"/>
-                            <Binding Path="RefDesError" Mode="TwoWay"/>
+                            <Binding Path="LineNumber"/>
+                            <Binding Path="Error"/>
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
@@ -33,6 +33,7 @@
         <Label Content="FTI Part # (For BOM)" HorizontalAlignment="Left" Margin="24,16,0,0" VerticalAlignment="Top"/>
         <CheckBox x:Name="checkSubmit" Content="Submit BOM" HorizontalAlignment="Left" Margin="330,21,0,0" VerticalAlignment="Top"/>
         <Button x:Name="btnImport" Content="Import BOM" HorizontalAlignment="Left" Margin="640,19,0,0" VerticalAlignment="Top" Click="BtnImport_Click"/>
-        <TextBlock x:Name="txtBomPartError" HorizontalAlignment="Left" Margin="156,4,0,0" Text="Please enter a valid FTI Part #" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="10" FontWeight="Bold" FontStyle="Italic" Visibility="Hidden"/>
+        <TextBlock x:Name="txtBomPartError" HorizontalAlignment="Left" Margin="156,4,0,0" Text="Please enter a valid FTI Part #" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="10" FontWeight="Bold" FontStyle="Italic" Visibility="Hidden" Foreground="Red"/>
+        <TextBlock x:Name="txtBomError" HorizontalAlignment="Left" Margin="157,2,0,0" Text="This BOM has errors that prevents it from importing" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="10" FontWeight="Bold" FontStyle="Italic" Visibility="Hidden" Foreground="Red"/>
     </Grid>
 </Window>

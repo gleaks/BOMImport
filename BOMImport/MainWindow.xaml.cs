@@ -131,7 +131,7 @@ namespace BOMImport
                 erpLines.Sort();
 
                 // Open a new window to proceed with BOM review & ERPNext import
-                ERPImport erpImportWindow = new(erpLines, credentials);
+                ERPImport erpImportWindow = new(erpLines);
                 erpImportWindow.Show();
             }
         }

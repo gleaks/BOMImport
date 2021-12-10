@@ -40,7 +40,7 @@ namespace BOMImport
         public int Qty { get; set; }
         public string RefDes { get; set; }
         public string ComponentName { get; set; }
-        public string RefDesError { get; set; }
+        public string Error { get; set; }
         public int LineNumber { get; set; }
         public int CompareTo(ERPLine compareLine)
         {
@@ -94,7 +94,15 @@ namespace BOMImport
                 // If the line is the last line
                 if (erpLines.IndexOf(line) == erpLines.Count - 1)
                 {
-                    queryString += " ] }";
+                    queryString += " ]";
+                    if (submit)
+                    {
+                        queryString += ", \"docstatus\" : \"1\" }";
+                    }
+                    else
+                    {
+                        queryString += "}";
+                    }
                 }
                 else
                 {

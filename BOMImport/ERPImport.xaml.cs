@@ -23,12 +23,12 @@ namespace BOMImport
     public partial class ERPImport : Window
     {
         private readonly List<ERPLine> erpLines;
-        private readonly Credentials credentials;
-        public ERPImport(List<ERPLine> x, Credentials y)
+        private bool hasErrors;
+        public ERPImport(List<ERPLine> x)
         {
             erpLines = x;
-            credentials = y;
             DataContext = erpLines;
+            InitializeComponent();
             int index = 1;
             // Iterate through each consolidated line that will be imported into ERPNext
             foreach (ERPLine line in erpLines)
@@ -36,33 +36,45 @@ namespace BOMImport
                 // Split the RefDes line by whitespace, so that it is possible to count the number of reference designators
                 var refDesSplit = line.RefDes.Split(" ");
                 // An empty error message if the refdes count matches with the BOM count
-                string refDesMismatch = null;
                 // If the refdes count doesnt match with the BOM count then populate the error message
-                if (refDesSplit.Length != line.Qty) { refDesMismatch += " *MISMATCH WITH REFDES QTY* "; }
-                // Set the error message in the object
-                line.RefDesError = refDesMismatch;
+                if (refDesSplit.Length != line.Qty) 
+                {
+                    string refDesMismatch = "*MISMATCH WITH REFDES QTY* ";
+                    line.Error += refDesMismatch;
+                    hasErrors = true; 
+                }
+                if (!int.TryParse(line.FTIPartNumber, out int n) && Math.Floor(Math.Log10(n) + 1) != 6)
+                {
+                    string noFTIPart = "*INVALID FTI PART #*";
+                    line.Error += noFTIPart;
+                    hasErrors = true;
+                    dgBOM.BorderBrush = Brushes.Red;
+                    txtBomError.Visibility = Visibility.Visible;
+                    btnImport.IsEnabled = false;
+                }
                 line.LineNumber = index;
                 index++;
             }
-
-            InitializeComponent();
         }
 
         private async void BtnImport_Click(object sender, RoutedEventArgs e)
         {
-            if (int.TryParse(txtBomPart.Text, out int n) && Math.Floor(Math.Log10(n) + 1) == 6)
+            if (hasErrors != true)
             {
-
-                var bomResult = await ERPNext.NewBOM(txtBomPart.Text, erpLines, (bool)(checkSubmit.IsChecked));
-                if (bomResult != "ERROR")
+                if (int.TryParse(txtBomPart.Text, out int n) && Math.Floor(Math.Log10(n) + 1) == 6)
                 {
 
+                    var bomResult = await ERPNext.NewBOM(txtBomPart.Text, erpLines, (bool)(checkSubmit.IsChecked));
+                    if (bomResult != "ERROR")
+                    {
+                        Close();
+                    }
                 }
-            }
-            else
-            {
-                txtBomPart.BorderBrush = Brushes.Red;
-                txtBomPartError.Visibility = Visibility.Visible;
+                else
+                {
+                    txtBomPart.BorderBrush = Brushes.Red;
+                    txtBomPartError.Visibility = Visibility.Visible;
+                }
             }
         }
         private void TxtBomPart_Changed(object sender, RoutedEventArgs e)
