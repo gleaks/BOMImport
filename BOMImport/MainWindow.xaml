@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BOMImport"
         mc:Ignorable="d"
-        Title="BOMImport - Focused Test Inc." Height="600" Width="800" ResizeMode="NoResize">
-    <DockPanel Margin="10" HorizontalAlignment="Stretch">
+        Title="BOMImport - Focused Test Inc." Height="289" Width="1200" ResizeMode="NoResize">
+    <Grid Margin="10,10,10,0">
         <WrapPanel DockPanel.Dock="Top" Margin="0,0,0,10">
             <Button Name="btnOpenFile" Click="BtnOpenFile_Click">Open BOM...</Button>
             <TextBlock Width="297"></TextBlock>
@@ -14,6 +14,7 @@
             <TextBlock x:Name="usernameTxt" Text="Logging in...    " TextWrapping="Wrap"/>
             <Button Name="btnAPIKey" Click="BtnAPIKey_Click">Credentials</Button>
         </WrapPanel>
-        <TextBox Name="txtEditor" />
-    </DockPanel>
+        <TextBlock Name="txtLogsHeader" Text="Logs" Width="67" FontWeight="Bold" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,39,0,0" />
+        <TextBlock Name="txtLogs" TextWrapping="Wrap" Width="1138" HorizontalAlignment="Center" Margin="0,68,0,10"/>
+    </Grid>
 </Window>

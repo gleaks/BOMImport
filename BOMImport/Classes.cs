@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Flurl.Http;
 using CsvHelper.Configuration;
 using System.Collections.Generic;
+using System.Dynamic;
 
 namespace BOMImport
 {
@@ -82,7 +83,7 @@ namespace BOMImport
                 return "ERROR";
             }
         }
-        public static async Task<string> NewBOM(string bomPart, List<ERPLine> erpLines, bool submit)
+        public static async Task<ExpandoObject> NewBOM(string bomPart, List<ERPLine> erpLines, bool submit)
         {
             var queryString = "{ \"item\" : \"" + bomPart + "\", \"company\" : \"Focused Test Inc\", \"quantity\" : \"1\", \"currency\" : \"USD\", ";
             queryString += "\"conversion_rate\" : \"1\", \"items\" : [ ";
@@ -94,15 +95,7 @@ namespace BOMImport
                 // If the line is the last line
                 if (erpLines.IndexOf(line) == erpLines.Count - 1)
                 {
-                    queryString += " ]";
-                    if (submit)
-                    {
-                        queryString += ", \"docstatus\" : \"1\" }";
-                    }
-                    else
-                    {
-                        queryString += "}";
-                    }
+                    queryString += " ] }";
                 }
                 else
                 {
@@ -113,13 +106,15 @@ namespace BOMImport
                 .WithBasicAuth(Credentials.APIKeyText, Credentials.APISecretText)
                 .PostStringAsync(queryString)
                 .ReceiveJson();
-            if (result.data[0] != null)
+            if (result.data.name != null)
             {
-                return result.data[0];
+                return result.data;
             }
             else
             {
-                return "ERROR";
+                dynamic errorObject = new ExpandoObject();
+                errorObject.error = "THERE WAS AN ERROR";
+                return errorObject;
             }
         }
     }

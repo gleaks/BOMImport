@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Data;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.Dynamic;
+using System.Windows.Documents;
+using System.Windows.Navigation;
 
 namespace BOMImport
 {
@@ -23,10 +15,12 @@ namespace BOMImport
     public partial class ERPImport : Window
     {
         private readonly List<ERPLine> erpLines;
+        private readonly MainWindow mainWindow;
         private readonly bool hasErrors;
-        public ERPImport(List<ERPLine> x)
+        public ERPImport(MainWindow y, List<ERPLine> x)
         {
             erpLines = x;
+            mainWindow = y;
             DataContext = erpLines;
             InitializeComponent();
             int index = 1;
@@ -64,9 +58,11 @@ namespace BOMImport
                 if (int.TryParse(txtBomPart.Text, out int n) && Math.Floor(Math.Log10(n) + 1) == 6)
                 {
 
-                    var bomResult = await ERPNext.NewBOM(txtBomPart.Text, erpLines, (bool)checkSubmit.IsChecked);
-                    if (bomResult != "ERROR")
+                    dynamic bomResult = await ERPNext.NewBOM(txtBomPart.Text, erpLines, (bool)checkSubmit.IsChecked);
+                    if (bomResult.name != null)
                     {
+                        var url = "https://focusedtest.frappe.cloud/desk#Form/BOM/" + bomResult.name;
+                        mainWindow.txtLogs.Text += bomResult.creation + ": " + bomResult.name + " succesfully imported into ERPNext @ " + url + "\n";
                         Close();
                     }
                 }
@@ -82,5 +78,6 @@ namespace BOMImport
             txtBomPart.ClearValue(TextBox.BorderBrushProperty);
             txtBomPartError.Visibility = Visibility.Hidden;
         }
+
     }
 }
