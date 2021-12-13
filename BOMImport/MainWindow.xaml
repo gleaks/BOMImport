@@ -7,6 +7,12 @@
         mc:Ignorable="d"
         Title="BOMImport - Focused Test Inc." Height="289" Width="1200" ResizeMode="NoResize">
     <Grid Margin="10,10,10,0">
+        <Popup Margin="10,10,0,13" Name="errorPopup" HorizontalAlignment="Left" VerticalAlignment="Top" IsOpen="False" Placement="Center">
+            <StackPanel>
+                <TextBlock Name="txtErrorPopup" Background="LightPink" />
+                <Button Name="btnErrorPopup" Content="Dismiss" Click="BtnErrorPopup_Click" />
+            </StackPanel>
+        </Popup>
         <WrapPanel DockPanel.Dock="Top" Margin="0,0,0,10">
             <Button Name="btnOpenFile" Click="BtnOpenFile_Click">Open BOM...</Button>
             <TextBlock Width="297"></TextBlock>
