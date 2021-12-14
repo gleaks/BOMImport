@@ -5,22 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BOMImport"
         mc:Ignorable="d"
-        Title="BOMImport - Focused Test Inc." Height="289" Width="1200" ResizeMode="NoResize">
-    <Grid Margin="10,10,10,0">
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}"
+        Title="BOMImport - Focused Test Inc." Height="200" Width="400" ResizeMode="NoResize">
+    <Grid Margin="10,10,10,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
         <Popup Margin="10,10,0,13" Name="errorPopup" HorizontalAlignment="Left" VerticalAlignment="Top" IsOpen="False" Placement="Center">
             <StackPanel>
                 <TextBlock Name="txtErrorPopup" Background="LightPink" />
                 <Button Name="btnErrorPopup" Content="Dismiss" Click="BtnErrorPopup_Click" />
             </StackPanel>
         </Popup>
-        <WrapPanel DockPanel.Dock="Top" Margin="0,0,0,10">
-            <Button Name="btnOpenFile" Click="BtnOpenFile_Click">Open BOM...</Button>
-            <TextBlock Width="297"></TextBlock>
-            <TextBlock Text="ERPNext User:   " TextWrapping="Wrap" FontWeight="Bold"/>
-            <TextBlock x:Name="usernameTxt" Text="Logging in...    " TextWrapping="Wrap"/>
-            <Button Name="btnAPIKey" Click="BtnAPIKey_Click">Credentials</Button>
-        </WrapPanel>
-        <TextBlock Name="txtLogsHeader" Text="Logs" Width="67" FontWeight="Bold" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,39,0,0" />
-        <TextBlock Name="txtLogs" TextWrapping="Wrap" Width="1138" HorizontalAlignment="Center" Margin="0,68,0,10"/>
+        <TextBlock Text="ERPNext User:" TextWrapping="Wrap" FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Left"/>
+        <TextBlock x:Name="usernameTxt" Text="Logging in..." TextWrapping="Wrap" Grid.Row="0" Margin="0,0,25,0" HorizontalAlignment="Right"/>
+        <materialDesign:PackIcon Name="loginIcon" Kind="ProgressCheck" Grid.Row="0" HorizontalAlignment="Right"/>
+        <Button Name="btnAPIKey" Click="BtnAPIKey_Click" Grid.Row="1" VerticalAlignment="Top">Credentials</Button>
+        <Button Name="btnOpenFile" Click="BtnOpenFile_Click" Grid.Row="2" VerticalAlignment="Top">Open BOM...</Button>
+        <TextBlock Text="Designed by Gareth Leak" Grid.Row="3" FontSize="10" Opacity="0.5" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

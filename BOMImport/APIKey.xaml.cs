@@ -19,10 +19,9 @@ namespace BOMImport
         }
         private async void CredentialOK_Click(object sender, RoutedEventArgs e)
         {
-            var loginUser = await ERPNext.Login(apiKeyText.Text, apiSecretText.Text);
-            mainWindow.usernameTxt.Text = loginUser + "    ";
-            if (loginUser != "ERROR") { Close(); }
-            else { errorMessageTxt.Visibility = Visibility.Visible; }
+            var loginUser = await ERPNext.Login(mainWindow, apiKeyText.Text, apiSecretText.Text);
+            if (loginUser == "ERROR") { errorMessageTxt.Visibility = Visibility.Visible; }
+            else { Close(); }
         }
     }
 }

@@ -62,7 +62,7 @@ namespace BOMImport
                     if (bomResult.name != null)
                     {
                         var url = "https://focusedtest.frappe.cloud/desk#Form/BOM/" + bomResult.name;
-                        mainWindow.txtLogs.Text += bomResult.creation + ": " + bomResult.name + " succesfully imported into ERPNext @ " + url + "\n";
+                        //mainWindow.txtLogs.Text += bomResult.creation + ": " + bomResult.name + " succesfully imported into ERPNext @ " + url + "\n";
                         Close();
                     }
                 }

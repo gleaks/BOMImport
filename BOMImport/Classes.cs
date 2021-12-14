@@ -5,6 +5,7 @@ using Flurl.Http;
 using CsvHelper.Configuration;
 using System.Collections.Generic;
 using System.Dynamic;
+using MaterialDesignThemes.Wpf;
 
 namespace BOMImport
 {
@@ -65,7 +66,7 @@ namespace BOMImport
     public static class ERPNext
     {
         public static string Username { get; set; }
-        public static async Task<String> Login(string u = null, string p = null)
+        public static async Task<String> Login(MainWindow mainWindow, string u = null, string p = null)
         {
             var username = u ?? Credentials.APIKeyText;
             var password = p ?? Credentials.APISecretText;
@@ -76,10 +77,16 @@ namespace BOMImport
                     .GetAsync()
                     .ReceiveJson();
                 ERPNext.Username = result.message;
+                mainWindow.usernameTxt.Text = result.message;
+                mainWindow.loginIcon.Kind = PackIconKind.CheckCircleOutline;
+                mainWindow.loginIcon.Foreground = System.Windows.Media.Brushes.Green;
                 return result.message;
             }
             catch (FlurlHttpException)
             {
+                mainWindow.loginIcon.Kind = PackIconKind.AlertCircleOutline;
+                mainWindow.loginIcon.Foreground = System.Windows.Media.Brushes.Red;
+                mainWindow.usernameTxt.Text = "Login Error";
                 return "ERROR";
             }
         }

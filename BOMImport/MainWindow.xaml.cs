@@ -10,6 +10,7 @@ using Microsoft.Win32;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Flurl.Http;
+using MaterialDesignThemes.Wpf;
 
 namespace BOMImport
 {
@@ -24,10 +25,7 @@ namespace BOMImport
         public async void Startup()
         {
             // Test the pre-existing login credentials in Settings
-            var loginUser = await ERPNext.Login();
-            // Display which user is logged in, or ERROR if not able to log in
-            usernameTxt.Text = loginUser + "    ";
-
+            var loginUser = await ERPNext.Login(this);
         }
 
         // Create an object that is a shortcut to the credentials stored in Settings
@@ -127,14 +125,14 @@ namespace BOMImport
                             }
                             catch (HeaderValidationException ex)
                             {
-                                txtLogs.Text += openFileDialog.FileName + " was missing required columns.\n";
+                                //txtLogs.Text += openFileDialog.FileName + " was missing required columns.\n";
                                 txtErrorPopup.Text = ex.ToString();
                                 errorPopup.IsOpen = true;
                             }
                             // If CSVHelper fails for some reason
                             catch (Exception ex)
                             {
-                                txtLogs.Text += openFileDialog.FileName + " could not be formatted properly.\n";
+                                //txtLogs.Text += openFileDialog.FileName + " could not be formatted properly.\n";
                                 txtErrorPopup.Text = ex.ToString();
                                 errorPopup.IsOpen = true;
                             }
@@ -142,7 +140,7 @@ namespace BOMImport
                         // If the StreamWriter fails to write for some reason
                         catch (Exception ex)
                         {
-                            txtLogs.Text += openFileDialog.FileName + " opened with an error.\n";
+                            //txtLogs.Text += openFileDialog.FileName + " opened with an error.\n";
                             txtErrorPopup.Text = ex.ToString();
                             errorPopup.IsOpen = true;
                         }
@@ -166,7 +164,7 @@ namespace BOMImport
                 // If the file can't be loaded for some reason
                 catch (Exception ex)
                 {
-                    txtLogs.Text += openFileDialog.FileName + " could not be opened.\n";
+                    //txtLogs.Text += openFileDialog.FileName + " could not be opened.\n";
                     txtErrorPopup.Text = ex.ToString();
                     errorPopup.IsOpen = true;
                 }
