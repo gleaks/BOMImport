@@ -12,7 +12,7 @@
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}"
         Title="BOMImport - BOM Detail Screen" 
-        Height="823" 
+        Height="843" 
         Width="1200"
         Top="0"
         Left="385">

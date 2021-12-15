@@ -11,7 +11,7 @@
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}"
-        Title="BOMImport - Focused Test Inc." Width="400" Height="230" ResizeMode="NoResize"
+        Title="BOMImport - Focused Test Inc." Width="400" Height="250" ResizeMode="NoResize"
         Top="0"
         Left="0">
     <Grid Margin="10,10,10,10">
@@ -49,6 +49,6 @@
                 <TextBlock Margin="5 0 0 0" Text="Help"/>
             </StackPanel>
         </Button>
-        <TextBlock Text="Designed by Gareth Leak" Grid.Row="4" FontSize="10" Opacity="0.5" VerticalAlignment="Bottom"/>
+        <TextBlock Text="Made by Gareth Leak for Focused Test, Inc." Grid.Row="4" FontSize="10" Opacity="0.5" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>
