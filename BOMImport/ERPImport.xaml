@@ -16,49 +16,55 @@
         Width="1200"
         Top="0"
         Left="385">
-    <Grid Margin="10,10,10,10">
-        <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="snackbarMain" HorizontalAlignment="Right" VerticalAlignment="Top" />
-        <StackPanel Orientation="Horizontal" Height="15" VerticalAlignment="Top">
-            <TextBlock x:Name="txtBomPartError" HorizontalAlignment="Left" Text="Please enter a valid FTI Part #" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="10" FontWeight="Bold" FontStyle="Italic" Visibility="Hidden" Foreground="Red"/>
-            <TextBlock x:Name="txtBomError" HorizontalAlignment="Left" Text="This BOM can't be imported. Please correct errors and click Recheck Errors." TextWrapping="Wrap" VerticalAlignment="Top" FontSize="10" FontWeight="Bold" FontStyle="Italic" Visibility="Hidden" Foreground="Red"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top" Margin="0,15,0,0">
-            <Label Content="FTI Part # (For BOM)" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBox x:Name="txtBomPart" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" TextChanged="TxtBomPart_Changed" Margin="15,0,0,0"/>
-            <CheckBox x:Name="checkSubmit" Content="Submit BOM" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="50,0,0,0"/>
-            <Button x:Name="btnImport" Content="Import BOM" HorizontalAlignment="Left" VerticalAlignment="Center" Click="BtnImport_Click" Margin="150,0,0,0"/>
-            <Button x:Name="btnTest" Content="Recheck Errors" HorizontalAlignment="Left" VerticalAlignment="Center" Click="BtnTest_Click" Margin="10,0,0,0"/>
-        </StackPanel>
-        <DataGrid x:Name="dgBOM" ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="0,60,0,0" HorizontalAlignment="Stretch">
-            <DataGrid.RowStyle>
-                <Style TargetType="DataGridRow">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding HasError}" Value="true">
-                            <Setter Property="Background" Value="LightPink" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.RowStyle>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="# " Width="0.05*" IsReadOnly="True">
-                    <DataGridTextColumn.Binding>
-                        <MultiBinding StringFormat="{}{0} {1}">
-                            <Binding Path="LineNumber"/>
-                            <Binding Path="Error"/>
-                        </MultiBinding>
-                    </DataGridTextColumn.Binding>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="FTI Part #" Width="0.1*" Binding="{Binding FTIPartNumber, Mode=TwoWay}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Qty" Width="0.05*" Binding="{Binding Qty, Mode=TwoWay}"></DataGridTextColumn>
-                <DataGridTextColumn Header="RefDes" Width="0.5*" Binding="{Binding RefDes, Mode=TwoWay}">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style>
-                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Component Name" Width="0.3*" Binding="{Binding ComponentName, Mode=TwoWay}"></DataGridTextColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-    </Grid>
+
+    <materialDesign:DialogHost Name="erpDialog">
+        <materialDesign:DialogHost.DialogContent>
+            <TextBlock>Loading...</TextBlock>
+        </materialDesign:DialogHost.DialogContent>
+        <Grid Margin="10,10,10,10">
+            <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="snackbarERP" HorizontalAlignment="Right" VerticalAlignment="Top" />
+            <StackPanel Orientation="Horizontal" Height="15" VerticalAlignment="Top">
+                <TextBlock x:Name="txtBomPartError" HorizontalAlignment="Left" Text="Please enter a valid FTI Part #" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="10" FontWeight="Bold" FontStyle="Italic" Visibility="Hidden" Foreground="Red"/>
+                <TextBlock x:Name="txtBomError" HorizontalAlignment="Left" Text="This BOM can't be imported. Please correct errors and click Recheck Errors." TextWrapping="Wrap" VerticalAlignment="Top" FontSize="10" FontWeight="Bold" FontStyle="Italic" Visibility="Hidden" Foreground="Red"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top" Margin="0,15,0,0">
+                <Label Content="FTI Part # (For BOM)" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtBomPart" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" TextChanged="TxtBomPart_Changed" Margin="15,0,0,0"/>
+                <CheckBox x:Name="checkSubmit" Content="Submit BOM" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="50,0,0,0"/>
+                <Button x:Name="btnImport" Content="Import BOM" HorizontalAlignment="Left" VerticalAlignment="Center" Click="BtnImport_Click" Margin="150,0,0,0"/>
+                <Button x:Name="btnTest" Content="Recheck Errors" HorizontalAlignment="Left" VerticalAlignment="Center" Click="BtnTest_Click" Margin="10,0,0,0"/>
+            </StackPanel>
+            <DataGrid x:Name="dgBOM" ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="0,60,0,0" HorizontalAlignment="Stretch">
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding HasError}" Value="true">
+                                <Setter Property="Background" Value="LightPink" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="# " Width="0.05*" IsReadOnly="True">
+                        <DataGridTextColumn.Binding>
+                            <MultiBinding StringFormat="{}{0} {1}">
+                                <Binding Path="LineNumber"/>
+                                <Binding Path="Error"/>
+                            </MultiBinding>
+                        </DataGridTextColumn.Binding>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="FTI Part #" Width="0.1*" Binding="{Binding FTIPartNumber, Mode=TwoWay}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Qty" Width="0.05*" Binding="{Binding Qty, Mode=TwoWay}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="RefDes" Width="0.5*" Binding="{Binding RefDes, Mode=TwoWay}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style>
+                                <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Component Name" Width="0.3*" Binding="{Binding ComponentName, Mode=TwoWay}"></DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </materialDesign:DialogHost>
 </Window>

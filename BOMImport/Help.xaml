@@ -12,7 +12,7 @@
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}"
         Title="BOMImport - Help" Width="400" Height="600" ResizeMode="NoResize"
-        Top="242"
+        Top="292"
         Left="0">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid Margin="10,10,10,10">

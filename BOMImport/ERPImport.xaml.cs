@@ -3,17 +3,10 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Dynamic;
-using System.Windows.Documents;
-using System.Windows.Navigation;
 using MaterialDesignThemes.Wpf;
-using System.Threading.Tasks;
 
 namespace BOMImport
 {
-    /// <summary>
-    /// Interaction logic for ERPImport.xaml
-    /// </summary>
     public partial class ERPImport : Window
     {
         private readonly List<ERPLine> erpLines;
@@ -35,18 +28,33 @@ namespace BOMImport
             {
                 if (int.TryParse(txtBomPart.Text, out int n) && Math.Floor(Math.Log10(n) + 1) == 6)
                 {
-
-                    dynamic bomResult = await ERPNext.NewBOM(txtBomPart.Text, erpLines, (bool)checkSubmit.IsChecked);
-                    if (bomResult.name != null)
+                    erpDialog.IsOpen = true;
+                    try
                     {
-                        var url = "https://focusedtest.frappe.cloud/desk#Form/BOM/" + bomResult.name;
-                        //mainWindow.txtLogs.Text += bomResult.creation + ": " + bomResult.name + " succesfully imported into ERPNext @ " + url + "\n";
-                        Close();
+                        dynamic bomResult = await ERPNext.NewBOM(txtBomPart.Text, erpLines, (bool)checkSubmit.IsChecked);
+                        if (bomResult.name != null)
+                        {
+                            string name = Convert.ToString(bomResult.name);
+                            string url = "https://focusedtest.frappe.cloud/desk#Form/BOM/" + name;
+                            mainWindow.snackbarMain.MessageQueue.Enqueue(name + " was succesfully imported into ERPNext", "OPEN LINK", param => mainWindow.OpenLink(param), url, false, true, TimeSpan.FromSeconds(10));
+                            Close();
+                        }
                     }
+                    catch (Exception ex)
+                    {
+                        mainWindow.txtErrorPopup.Text = ex.ToString();
+                        mainWindow.errorPopup.IsOpen = true;
+                    }
+                    finally
+                    {
+                        erpDialog.IsOpen = false;
+                    }
+
+
                 }
                 else
                 {
-                    snackbarMain.MessageQueue.Enqueue("ERROR: Please enter a valid FTI Part");
+                    snackbarERP.MessageQueue.Enqueue("ERROR: Please enter a valid FTI Part");
                     txtBomPart.BorderBrush = Brushes.Red;
                     txtBomPartError.Visibility = Visibility.Visible;
                 }
@@ -54,7 +62,7 @@ namespace BOMImport
         }
         private void TxtBomPart_Changed(object sender, RoutedEventArgs e)
         {
-            snackbarMain.MessageQueue.Clear();
+            snackbarERP.MessageQueue.Clear();
             txtBomPart.ClearValue(TextBox.BorderBrushProperty);
             txtBomPartError.Visibility = Visibility.Hidden;
         }

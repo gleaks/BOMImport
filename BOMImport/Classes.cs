@@ -50,38 +50,38 @@ namespace BOMImport
     {
         public static string APIKeyText
         {
-            get { return Properties.Settings.Default.api_key; }
-            set { Properties.Settings.Default.api_key = value; }
+            get => Properties.Settings.Default.api_key;
+            set => Properties.Settings.Default.api_key = value;
         }
         public static string APISecretText
         {
-            get { return Properties.Settings.Default.api_secret; }
-            set { Properties.Settings.Default.api_secret = value; }
+            get => Properties.Settings.Default.api_secret;
+            set => Properties.Settings.Default.api_secret = value;
         }
     }
     public static class ERPNext
     {
         public static string Username { get; set; }
-        public static async Task<String> Login(MainWindow mainWindow, string u = null, string p = null)
+        public static async Task<string> Login(MainWindow mainWindow, string u = null, string p = null)
         {
-            var username = u ?? Credentials.APIKeyText;
-            var password = p ?? Credentials.APISecretText;
+            string username = u ?? Credentials.APIKeyText;
+            string password = p ?? Credentials.APISecretText;
             try
             {
-                var result = await "https://focusedtest.frappe.cloud/api/method/frappe.auth.get_logged_user"
+                dynamic result = await "https://focusedtest.frappe.cloud/api/method/frappe.auth.get_logged_user"
                     .WithBasicAuth(username, password)
                     .GetAsync()
                     .ReceiveJson();
-                ERPNext.Username = result.message;
+                Username = result.message;
                 mainWindow.usernameTxt.Text = result.message;
                 mainWindow.loginIcon.Kind = PackIconKind.CheckCircleOutline;
-                mainWindow.loginIcon.Foreground = System.Windows.Media.Brushes.Green;
+                mainWindow.loginIcon.Foreground = Brushes.Green;
                 return result.message;
             }
             catch (FlurlHttpException)
             {
                 mainWindow.loginIcon.Kind = PackIconKind.AlertCircleOutline;
-                mainWindow.loginIcon.Foreground = System.Windows.Media.Brushes.Red;
+                mainWindow.loginIcon.Foreground = Brushes.Red;
                 mainWindow.usernameTxt.Text = "Login Error";
                 return "ERROR";
             }
@@ -97,7 +97,7 @@ namespace BOMImport
                 line.HasError = false;
                 line.Error = null;
                 // Split the RefDes line by whitespace, so that it is possible to count the number of reference designators
-                var refDesSplit = line.RefDes.Split(" ");
+                string[] refDesSplit = line.RefDes.Split(" ");
                 // An empty error message if the refdes count matches with the BOM count
                 // If the refdes count doesnt match with the BOM count then populate the error message
                 if (refDesSplit.Length != line.Qty)
@@ -119,21 +119,23 @@ namespace BOMImport
             }
             if (hasErrors)
             {
-                erpImport.snackbarMain.MessageQueue.Enqueue("There are errors in this BOM.");
+                erpImport.snackbarERP.MessageQueue.Enqueue("There are errors in this BOM.");
                 erpImport.txtBomError.Visibility = Visibility.Visible;
                 erpImport.btnImport.IsEnabled = false;
             }
             else
             {
-                erpImport.snackbarMain.MessageQueue.Clear();
+                erpImport.snackbarERP.MessageQueue.Clear();
                 erpImport.txtBomError.Visibility = Visibility.Hidden;
                 erpImport.btnImport.IsEnabled = true;
             }
+            erpImport.dgBOM.Items.Refresh();
+
             return hasErrors;
         }
         public static async Task<ExpandoObject> NewBOM(string bomPart, List<ERPLine> erpLines, bool submit)
         {
-            var queryString = "{ \"item\" : \"" + bomPart + "\", \"company\" : \"Focused Test Inc\", \"quantity\" : \"1\", \"currency\" : \"USD\", ";
+            string queryString = "{ \"item\" : \"" + bomPart + "\", \"company\" : \"Focused Test Inc\", \"quantity\" : \"1\", \"currency\" : \"USD\", ";
             queryString += "\"conversion_rate\" : \"1\", \"items\" : [ ";
             foreach (ERPLine line in erpLines)
             {
@@ -150,7 +152,7 @@ namespace BOMImport
                     queryString += ", ";
                 }
             }
-            var result = await "https://focusedtest.frappe.cloud/api/resource/BOM"
+            dynamic result = await "https://focusedtest.frappe.cloud/api/resource/BOM"
                 .WithBasicAuth(Credentials.APIKeyText, Credentials.APISecretText)
                 .PostStringAsync(queryString)
                 .ReceiveJson();

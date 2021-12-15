@@ -183,5 +183,13 @@ namespace BOMImport
             Help helpWindow = new();
             helpWindow.Show();
         }
+        public void OpenLink(string url)
+        {
+            var sInfo = new System.Diagnostics.ProcessStartInfo(url)
+            {
+                UseShellExecute = true,
+            };
+            System.Diagnostics.Process.Start(sInfo);
+        }
     }
 }

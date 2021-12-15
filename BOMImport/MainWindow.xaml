@@ -11,7 +11,7 @@
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}"
-        Title="BOMImport - Focused Test Inc." Width="400" Height="250" ResizeMode="NoResize"
+        Title="BOMImport - Focused Test Inc." Width="400" Height="300" ResizeMode="NoResize"
         Top="0"
         Left="0">
     <Grid Margin="10,10,10,10">
@@ -20,7 +20,7 @@
             <RowDefinition Height="50" />
             <RowDefinition Height="40" />
             <RowDefinition Height="50" />
-            <RowDefinition Height="20" />
+            <RowDefinition Height="50" />
         </Grid.RowDefinitions>
         <Popup Margin="10,10,0,13" Name="errorPopup" HorizontalAlignment="Left" VerticalAlignment="Top" IsOpen="False" Placement="Center">
             <StackPanel>
@@ -50,5 +50,6 @@
             </StackPanel>
         </Button>
         <TextBlock Text="Made by Gareth Leak for Focused Test, Inc." Grid.Row="4" FontSize="10" Opacity="0.5" VerticalAlignment="Bottom"/>
+        <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="snackbarMain" HorizontalAlignment="Stretch" VerticalAlignment="Top" Grid.Row="4" />
     </Grid>
 </Window>

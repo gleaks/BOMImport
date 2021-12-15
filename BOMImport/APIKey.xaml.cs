@@ -8,7 +8,7 @@ namespace BOMImport
         public APIKey(MainWindow x, Credentials y)
         {
             InitializeComponent();
-            var credentials = y;
+            Credentials credentials = y;
             mainWindow = x;
             DataContext = credentials;
         }
