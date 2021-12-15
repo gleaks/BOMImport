@@ -17,10 +17,6 @@ namespace BOMImport
         public string ComponentName { get; set; }
         public string RefDes { get; set; }
         public string Value { get; set; }
-        public string PartNumber { get; set; }
-        public string DistributorPartNum { get; set; }
-        public string Manufacturer { get; set; }
-        public string MfgPartNum { get; set; }
         public string FTIPartNumber { get; set; }
         public string PatternName { get; set; }
     }
@@ -31,9 +27,6 @@ namespace BOMImport
             // Automatically try and map as many header fields as possible, as there can be a variable amount of columns in each BOM
             AutoMap(CultureInfo.InvariantCulture);
             // Hand map the most important header columns, especially ones that don't auto-format
-            Map(m => m.PartNumber).Name("Part Number");
-            Map(m => m.DistributorPartNum).Name("Distributor Part Num");
-            Map(m => m.MfgPartNum).Name("Mfg Part Num");
             Map(m => m.FTIPartNumber).Name("FTI Part Number");
         }
     }

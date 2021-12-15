@@ -6,10 +6,15 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:BOMImport"
         mc:Ignorable="d"
-        Title="ERPImport" 
-        Height="800" 
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}"
+        Title="BOMImport - BOM Detail Screen" 
+        Height="823" 
         Width="1200"
-        Top="100"
+        Top="0"
         Left="385">
     <Grid Margin="10,10,10,10">
         <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="snackbarMain" HorizontalAlignment="Right" VerticalAlignment="Top" />

@@ -1,0 +1,85 @@
+﻿<Window x:Class="BOMImport.Help"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BOMImport"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}"
+        Title="BOMImport - Help" Width="400" Height="600" ResizeMode="NoResize"
+        Top="222"
+        Left="0">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="10,10,10,10">
+            <StackPanel>
+                <materialDesign:Card>
+                    <Expander HorizontalAlignment="Stretch" Header="What Does This Program Do?">
+                        <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
+                            <TextBlock TextWrapping="Wrap">
+                                This program allows you to open the default .bom file exported from P-CAD 2002, formats it properly and then allows you to edit the BOM in a datagrid similar to Excel.<LineBreak /><LineBreak />
+                                When the BOM has been formatted properly you can then import it into ERPNext (focusedtest.frappe.cloud) as a new BOM for a pre-existing item.<LineBreak /><LineBreak />
+                                It does this by purely matching up FTI Part #'s from the BOM with the Item ID in ERPNext. So for a BOM to import properly every FTI Part # must be filled in and be correct.
+                            </TextBlock>
+                        </StackPanel>
+                    </Expander>
+                </materialDesign:Card>
+                <materialDesign:Card>
+                    <Expander HorizontalAlignment="Stretch" Header="Login / Find API Key">
+                        <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
+                            <TextBlock TextWrapping="Wrap">
+                                Your account must have System Manager checked in your Roles to be able to use the API keys. Speak to Delfin for proper permissions or login if you don't have one yourself.<LineBreak />
+                            </TextBlock>
+                            <TextBlock TextWrapping="Wrap" Text="1) Login to focusedtest.frappe.cloud" />
+                            <TextBlock TextWrapping="Wrap" Text="2) Click on Settings in the top right corner - click on My Settings in the dropdown menu." />
+                            <TextBlock TextWrapping="Wrap" Text="3) Scroll to the bottom and click on the API ACCESS tab to open it. Click on the Generate Keys button." />
+                            <TextBlock TextWrapping="Wrap" Text="3) In the popup it will show the API Secret (this is the only time it will display your API secret, don't lose it)." />
+                            <TextBlock TextWrapping="Wrap" Text="4) Close the popup. Refresh the page and scroll back down to the bottom. Under API ACCESS it will show your API Key." />
+                        </StackPanel>
+                    </Expander>
+                </materialDesign:Card>
+                <materialDesign:Card>
+                    <Expander HorizontalAlignment="Stretch" Header="Export P-CAD BOM">
+                        <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
+                            <TextBlock TextWrapping="Wrap" Text="1) Open the Schematic (make sure it is the .sch not the PCB file) of the assembly you wish to export a BOM from." />
+                            <TextBlock TextWrapping="Wrap" Text="2) Click on File -> Reports..." />
+                            <TextBlock TextWrapping="Wrap" Text="3) Click on the Filename... button to choose where the file is saved." />
+                            <TextBlock TextWrapping="Wrap" Text="3) Under Reports to Generate check the checkbox next to Bill of Materials (bom)." />
+                            <TextBlock TextWrapping="Wrap" Text="4) Report Destination should be File. Report Origin is 0.0mil for both X and Y (this should be default)." />
+                            <TextBlock TextWrapping="Wrap" Text="5) Style Format should be Seperated List. List Seperator should be ," />
+                            <TextBlock TextWrapping="Wrap" Text="6) Click on the Generate button. Open the generated .bom file with Open BOM... in this program." />
+                        </StackPanel>
+                    </Expander>
+                </materialDesign:Card>
+                <materialDesign:Card>
+                    <Expander HorizontalAlignment="Stretch" Header="ERROR: Headers Are Missing">
+                        <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
+                            <TextBlock TextWrapping="Wrap">
+                                For the import to work properly the P-CAD BOM must contain all of the required Headers.<LineBreak />
+                            </TextBlock>
+                            <TextBlock TextWrapping="Wrap" Text="1) Open the Schematic (the .sch file, not the PCB file) of the file you wish to import." />
+                            <TextBlock TextWrapping="Wrap" Text="2) Click on File -> Reports..." />
+                            <TextBlock TextWrapping="Wrap" Text="3) Under Reports to Generate highlight the Bill of Materials (bom) line." />
+                            <TextBlock TextWrapping="Wrap" Text="4) Click on the Customize... button on the bottom while the line is still highlighted." />
+                            <TextBlock TextWrapping="Wrap" Text="5) Click on the Sort tab at the top." />
+                            <TextBlock TextWrapping="Wrap" Text="6) Select a field under Available Fields and click on the Insert -> button to move it into the Selected Fields window." />
+                            <TextBlock TextWrapping="Wrap">
+                                7) Make sure the following are all in the Selected Fields window:<LineBreak />
+                                ComponentName<LineBreak />
+                                Value<LineBreak />
+                                RefDes<LineBreak />
+                                PatternName<LineBreak />
+                                FTI Part Number
+                            </TextBlock>
+                            <TextBlock TextWrapping="Wrap" Text="8) Click OK at the bottom. Proceed to generate P-CAD BOM (see help if needed)." />
+                        </StackPanel>
+                    </Expander>
+                </materialDesign:Card>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Window>

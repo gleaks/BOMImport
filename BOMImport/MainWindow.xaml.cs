@@ -128,14 +128,12 @@ namespace BOMImport
                             }
                             catch (HeaderValidationException ex)
                             {
-                                //txtLogs.Text += openFileDialog.FileName + " was missing required columns.\n";
-                                txtErrorPopup.Text = ex.ToString();
+                                txtErrorPopup.Text = "ERROR: Headers Are Missing";
                                 errorPopup.IsOpen = true;
                             }
                             // If CSVHelper fails for some reason
                             catch (Exception ex)
                             {
-                                //txtLogs.Text += openFileDialog.FileName + " could not be formatted properly.\n";
                                 txtErrorPopup.Text = ex.ToString();
                                 errorPopup.IsOpen = true;
                             }
@@ -143,7 +141,6 @@ namespace BOMImport
                         // If the StreamWriter fails to write for some reason
                         catch (Exception ex)
                         {
-                            //txtLogs.Text += openFileDialog.FileName + " opened with an error.\n";
                             txtErrorPopup.Text = ex.ToString();
                             errorPopup.IsOpen = true;
                         }
@@ -180,6 +177,11 @@ namespace BOMImport
         {
             errorPopup.IsOpen = false;
             txtErrorPopup.Text = "";
+        }
+        private void BtnHelp_Click(object sender, RoutedEventArgs e)
+        {
+            Help helpWindow = new();
+            helpWindow.Show();
         }
     }
 }
