@@ -95,8 +95,11 @@ namespace BOMImport
                                         !line.Value.Contains("NOT_USED") &&
                                         !line.PatternName.Contains("BLANK"))
                                     {
+                                        ERPLine thisLine = line.FTIPartNumber != ""
+                                            ? erpLines.Find(d => d.FTIPartNumber == line.FTIPartNumber)
+                                            : erpLines.Find(d => d.ComponentName == line.ComponentName);
                                         // See if this lines FTI Part # already exists in our erpLines list
-                                        var thisLine = erpLines.Find(d => d.FTIPartNumber == line.FTIPartNumber);
+
                                         // If the part exists
                                         if (thisLine != null)
                                         {
@@ -149,9 +152,6 @@ namespace BOMImport
                         {
                             streamWriter.Dispose();
                         }
-
-                        // Sort the BOM by FTIPartNumber (this is set in the class definition above - CompareTo)
-                        erpLines.Sort();
 
                         if (erpLines.Count != 0)
                         {

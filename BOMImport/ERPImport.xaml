@@ -3,13 +3,39 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:BOMImport"
         mc:Ignorable="d"
-        Title="ERPImport" Height="450" Width="800">
-    <Grid>
-        <DataGrid x:Name="dgBOM" ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="0,48,0,0" HorizontalAlignment="Stretch">
+        Title="ERPImport" 
+        Height="800" 
+        Width="1200"
+        Top="100"
+        Left="385">
+    <Grid Margin="10,10,10,10">
+        <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="snackbarMain" HorizontalAlignment="Right" VerticalAlignment="Top" />
+        <StackPanel Orientation="Horizontal" Height="15" VerticalAlignment="Top">
+            <TextBlock x:Name="txtBomPartError" HorizontalAlignment="Left" Text="Please enter a valid FTI Part #" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="10" FontWeight="Bold" FontStyle="Italic" Visibility="Hidden" Foreground="Red"/>
+            <TextBlock x:Name="txtBomError" HorizontalAlignment="Left" Text="This BOM can't be imported. Please correct errors and click Recheck Errors." TextWrapping="Wrap" VerticalAlignment="Top" FontSize="10" FontWeight="Bold" FontStyle="Italic" Visibility="Hidden" Foreground="Red"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top" Margin="0,15,0,0">
+            <Label Content="FTI Part # (For BOM)" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBox x:Name="txtBomPart" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" TextChanged="TxtBomPart_Changed" Margin="15,0,0,0"/>
+            <CheckBox x:Name="checkSubmit" Content="Submit BOM" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="50,0,0,0"/>
+            <Button x:Name="btnImport" Content="Import BOM" HorizontalAlignment="Left" VerticalAlignment="Center" Click="BtnImport_Click" Margin="150,0,0,0"/>
+            <Button x:Name="btnTest" Content="Recheck Errors" HorizontalAlignment="Left" VerticalAlignment="Center" Click="BtnTest_Click" Margin="10,0,0,0"/>
+        </StackPanel>
+        <DataGrid x:Name="dgBOM" ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="0,60,0,0" HorizontalAlignment="Stretch">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding HasError}" Value="true">
+                            <Setter Property="Background" Value="LightPink" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="# " Width="0.05*">
+                <DataGridTextColumn Header="# " Width="0.05*" IsReadOnly="True">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}">
                             <Binding Path="LineNumber"/>
@@ -29,11 +55,5 @@
                 <DataGridTextColumn Header="Component Name" Width="0.3*" Binding="{Binding ComponentName, Mode=TwoWay}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <TextBox x:Name="txtBomPart" HorizontalAlignment="Left" Margin="156,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="TxtBomPart_Changed"/>
-        <Label Content="FTI Part # (For BOM)" HorizontalAlignment="Left" Margin="24,16,0,0" VerticalAlignment="Top"/>
-        <CheckBox x:Name="checkSubmit" Content="Submit BOM" HorizontalAlignment="Left" Margin="330,21,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="btnImport" Content="Import BOM" HorizontalAlignment="Left" Margin="640,19,0,0" VerticalAlignment="Top" Click="BtnImport_Click"/>
-        <TextBlock x:Name="txtBomPartError" HorizontalAlignment="Left" Margin="156,4,0,0" Text="Please enter a valid FTI Part #" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="10" FontWeight="Bold" FontStyle="Italic" Visibility="Hidden" Foreground="Red"/>
-        <TextBlock x:Name="txtBomError" HorizontalAlignment="Left" Margin="157,2,0,0" Text="This BOM has errors that prevents it from importing" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="10" FontWeight="Bold" FontStyle="Italic" Visibility="Hidden" Foreground="Red"/>
     </Grid>
 </Window>

@@ -11,11 +11,14 @@
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}"
-        Title="BOMImport - Focused Test Inc." Height="200" Width="400" ResizeMode="NoResize">
+        Title="BOMImport - Focused Test Inc." Width="400" Height="230" ResizeMode="NoResize"
+        Top="100"
+        Left="0">
     <Grid Margin="10,10,10,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="50" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="50" />
             <RowDefinition Height="20" />
         </Grid.RowDefinitions>
@@ -28,8 +31,24 @@
         <TextBlock Text="ERPNext User:" TextWrapping="Wrap" FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Left"/>
         <TextBlock x:Name="usernameTxt" Text="Logging in..." TextWrapping="Wrap" Grid.Row="0" Margin="0,0,25,0" HorizontalAlignment="Right"/>
         <materialDesign:PackIcon Name="loginIcon" Kind="ProgressCheck" Grid.Row="0" HorizontalAlignment="Right"/>
-        <Button Name="btnAPIKey" Click="BtnAPIKey_Click" Grid.Row="1" VerticalAlignment="Top">Credentials</Button>
-        <Button Name="btnOpenFile" Click="BtnOpenFile_Click" Grid.Row="2" VerticalAlignment="Top">Open BOM...</Button>
-        <TextBlock Text="Designed by Gareth Leak" Grid.Row="3" FontSize="10" Opacity="0.5" VerticalAlignment="Bottom"/>
+        <Button Name="btnAPIKey" Click="BtnAPIKey_Click" Grid.Row="1" VerticalAlignment="Top" ToolTip="Icon">
+            <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Kind="AccountKey"/>
+                <TextBlock Margin="5 0 0 0" Text="Login / Change Login"/>
+            </StackPanel>
+        </Button>
+        <Button Name="btnOpenFile" Click="BtnOpenFile_Click" Grid.Row="2" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Kind="FileDelimitedOutline"/>
+                <TextBlock Margin="5 0 0 0" Text="Open BOM..."/>
+            </StackPanel>
+        </Button>
+        <Button Name="btnHelp" Grid.Row="3" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Kind="HelpCircleOutline"/>
+                <TextBlock Margin="5 0 0 0" Text="Help"/>
+            </StackPanel>
+        </Button>
+        <TextBlock Text="Designed by Gareth Leak" Grid.Row="4" FontSize="10" Opacity="0.5" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

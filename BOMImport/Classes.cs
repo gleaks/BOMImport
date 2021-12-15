@@ -6,6 +6,8 @@ using CsvHelper.Configuration;
 using System.Collections.Generic;
 using System.Dynamic;
 using MaterialDesignThemes.Wpf;
+using System.Windows;
+using System.Windows.Media;
 
 namespace BOMImport
 {
@@ -43,6 +45,7 @@ namespace BOMImport
         public string RefDes { get; set; }
         public string ComponentName { get; set; }
         public string Error { get; set; }
+        public bool HasError { get; set; }
         public int LineNumber { get; set; }
         public int CompareTo(ERPLine compareLine)
         {
@@ -89,6 +92,51 @@ namespace BOMImport
                 mainWindow.usernameTxt.Text = "Login Error";
                 return "ERROR";
             }
+        }
+        public static bool ErrorCheck(List<ERPLine> erpLines, ERPImport erpImport)
+        {
+            erpLines.Sort();
+            int index = 1;
+            bool hasErrors = false;
+            // Iterate through each consolidated line that will be imported into ERPNext
+            foreach (ERPLine line in erpLines)
+            {
+                line.HasError = false;
+                line.Error = null;
+                // Split the RefDes line by whitespace, so that it is possible to count the number of reference designators
+                var refDesSplit = line.RefDes.Split(" ");
+                // An empty error message if the refdes count matches with the BOM count
+                // If the refdes count doesnt match with the BOM count then populate the error message
+                if (refDesSplit.Length != line.Qty)
+                {
+                    string refDesMismatch = "*MISMATCH WITH REFDES QTY* ";
+                    line.Error += refDesMismatch;
+                    hasErrors = true;
+                    line.HasError = true;
+                }
+                else if (!int.TryParse(line.FTIPartNumber, out int n) && Math.Floor(Math.Log10(n) + 1) != 6)
+                {
+                    string noFTIPart = "*INVALID FTI PART #*";
+                    line.Error += noFTIPart;
+                    hasErrors = true;
+                    line.HasError = true;
+                }
+                line.LineNumber = index;
+                index++;
+            }
+            if (hasErrors)
+            {
+                erpImport.snackbarMain.MessageQueue.Enqueue("There are errors in this BOM.");
+                erpImport.txtBomError.Visibility = Visibility.Visible;
+                erpImport.btnImport.IsEnabled = false;
+            }
+            else
+            {
+                erpImport.snackbarMain.MessageQueue.Clear();
+                erpImport.txtBomError.Visibility = Visibility.Hidden;
+                erpImport.btnImport.IsEnabled = true;
+            }
+            return hasErrors;
         }
         public static async Task<ExpandoObject> NewBOM(string bomPart, List<ERPLine> erpLines, bool submit)
         {
