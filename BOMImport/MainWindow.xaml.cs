@@ -1,16 +1,12 @@
-﻿using System;
-using System.IO;
-using System.Windows;
-using System.Globalization;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using Microsoft.Win32;
-using CsvHelper;
+﻿using CsvHelper;
 using CsvHelper.Configuration;
-using Flurl.Http;
-using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace BOMImport
 {
@@ -126,7 +122,7 @@ namespace BOMImport
                                     }
                                 }
                             }
-                            catch (HeaderValidationException ex)
+                            catch (HeaderValidationException)
                             {
                                 txtErrorPopup.Text = "ERROR: Headers Are Missing";
                                 errorPopup.IsOpen = true;
