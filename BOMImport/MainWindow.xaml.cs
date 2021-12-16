@@ -27,14 +27,18 @@ namespace BOMImport
         // Create an object that is a shortcut to the credentials stored in Settings
         public Credentials credentials = new();
 
+        // The button for Open BOM...
         private void BtnOpenFile_Click(object sender, RoutedEventArgs e)
         {
+            // When someone clicks on OPEN BOM... then open a file dialog
             OpenFileDialog openFileDialog = new()
             {
+                // Filter out only P-CAD BOMS, but also allow an option to select any file
                 Filter = "P-CAD BOM (*.bom)|*.bom|All files (*.*)|*.*"
             };
             if (openFileDialog.ShowDialog() == true)
             {
+                // Once the file is open try-catch the header manipulations
                 try
                 {
                     // Read the CSV file into a string so it can be manipulated
@@ -47,7 +51,8 @@ namespace BOMImport
                     var fixHeaders = Regex.Split(fixedFileString, "\n(?=\r?$)", RegexOptions.Multiline);
                     // Get rid of any line breaks inside of the header (index 0 of the split), P-CAD adds line breaks in the header sometimes
                     var fixedHeader = fixHeaders[0].Replace(Environment.NewLine, "");
-                    // Combine the header and the body that was split earlier
+                    // Combine the header and the body that was split earlier. Combine all segments of the body in case there were
+                    // random line breaks in the body as well (this happens sometimes).
                     var fixedHeaders = "";
                     foreach (var x in fixHeaders) { fixedHeaders += x; }
                     // This will be the final, formatted list that is imported into ERPNext
@@ -91,10 +96,11 @@ namespace BOMImport
                                         !line.Value.Contains("NOT_USED") &&
                                         !line.PatternName.Contains("BLANK"))
                                     {
+                                        // See if this lines FTI Part # already exists in our erpLines list.
+                                        // If this line has a blank FTI Part # then see if a part with the same ComponentName exists
                                         ERPLine thisLine = line.FTIPartNumber != ""
                                             ? erpLines.Find(d => d.FTIPartNumber == line.FTIPartNumber)
                                             : erpLines.Find(d => d.ComponentName == line.ComponentName);
-                                        // See if this lines FTI Part # already exists in our erpLines list
 
                                         // If the part exists
                                         if (thisLine != null)
@@ -122,9 +128,11 @@ namespace BOMImport
                                     }
                                 }
                             }
-                            catch (HeaderValidationException)
+                            // If there are missing headers then pop up an error explaining that
+                            catch (HeaderValidationException ex)
                             {
-                                txtErrorPopup.Text = "ERROR: Headers Are Missing";
+                                txtErrorPopup.Text = "ERROR: Headers Are Missing\n\n\n";
+                                txtErrorPopup.Text += ex.ToString();
                                 errorPopup.IsOpen = true;
                             }
                             // If CSVHelper fails for some reason
@@ -146,39 +154,48 @@ namespace BOMImport
                             streamWriter.Dispose();
                         }
 
+                        // Make sure there are actually lines inside ERPLines
                         if (erpLines.Count != 0)
                         {
                             // Open a new window to proceed with BOM review & ERPNext import
                             ERPImport erpImportWindow = new(this, erpLines);
                             erpImportWindow.Show();
                         }
+                        else
+                        {
+                            txtErrorPopup.Text = "ERROR: There are no lines in this BOM";
+                            errorPopup.IsOpen = true;
+                        }
                     }
                 }
                 // If the file can't be loaded for some reason
                 catch (Exception ex)
                 {
-                    //txtLogs.Text += openFileDialog.FileName + " could not be opened.\n";
                     txtErrorPopup.Text = ex.ToString();
                     errorPopup.IsOpen = true;
                 }
             }
         }
 
+        // Open the Login page (APIKey page) if someone clicks on the Login button
         private void BtnAPIKey_Click(object sender, RoutedEventArgs e)
         {
             APIKey apiKeyWindow = new(this, credentials);
             apiKeyWindow.Show();
         }
+        // The button to dismiss an error page when it pops up
         private void BtnErrorPopup_Click(object sender, RoutedEventArgs e)
         {
             errorPopup.IsOpen = false;
             txtErrorPopup.Text = "";
         }
+        // Open the Help page if someone clicks the Help button
         private void BtnHelp_Click(object sender, RoutedEventArgs e)
         {
             Help helpWindow = new();
             helpWindow.Show();
         }
+        // If someone clicks a link then open it in the default browser (code taken from MSDN)
         public void OpenLink(string url)
         {
             var sInfo = new System.Diagnostics.ProcessStartInfo(url)
