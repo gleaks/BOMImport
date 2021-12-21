@@ -161,11 +161,6 @@ namespace BOMImport
                             ERPImport erpImportWindow = new(this, erpLines);
                             erpImportWindow.Show();
                         }
-                        else
-                        {
-                            txtErrorPopup.Text = "ERROR: There are no lines in this BOM";
-                            errorPopup.IsOpen = true;
-                        }
                     }
                 }
                 // If the file can't be loaded for some reason
